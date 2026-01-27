@@ -1,0 +1,159 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|e:\\dev\\visualstudio\\repos\\zenda.api\\zenda.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|solutionrelative:zenda.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|e:\\dev\\visualstudio\\repos\\zenda.api\\zenda.api\\domain\\entities\\taskitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|solutionrelative:zenda.api\\domain\\entities\\taskitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|e:\\dev\\visualstudio\\repos\\zenda.api\\zenda.api\\domain\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|solutionrelative:zenda.api\\domain\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|e:\\dev\\visualstudio\\repos\\zenda.api\\zenda.api\\domain\\enums\\taskstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|solutionrelative:zenda.api\\domain\\enums\\taskstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|e:\\dev\\visualstudio\\repos\\zenda.api\\zenda.api\\infrastructure\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|solutionrelative:zenda.api\\infrastructure\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|e:\\dev\\visualstudio\\repos\\zenda.api\\zenda.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|solutionrelative:zenda.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|e:\\dev\\visualstudio\\repos\\zenda.api\\zenda.api\\application\\services\\taskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4096C6B3-DE95-4174-938E-CD1C99EB9AE5}|Zenda.API\\Zenda.API.csproj|solutionrelative:zenda.api\\application\\services\\taskservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\appsettings.json",
+              "RelativeDocumentMoniker": "Zenda.API\\appsettings.json",
+              "ToolTip": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\appsettings.json",
+              "RelativeToolTip": "Zenda.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-01-27T03:34:25.105Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TaskItem.cs",
+              "DocumentMoniker": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Domain\\Entities\\TaskItem.cs",
+              "RelativeDocumentMoniker": "Zenda.API\\Domain\\Entities\\TaskItem.cs",
+              "ToolTip": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Domain\\Entities\\TaskItem.cs",
+              "RelativeToolTip": "Zenda.API\\Domain\\Entities\\TaskItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T03:26:45.436Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TaskStatus.cs",
+              "DocumentMoniker": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Domain\\Enums\\TaskStatus.cs",
+              "RelativeDocumentMoniker": "Zenda.API\\Domain\\Enums\\TaskStatus.cs",
+              "ToolTip": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Domain\\Enums\\TaskStatus.cs",
+              "RelativeToolTip": "Zenda.API\\Domain\\Enums\\TaskStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T03:26:39.432Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "User.cs",
+              "DocumentMoniker": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Domain\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "Zenda.API\\Domain\\Entities\\User.cs",
+              "ToolTip": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Domain\\Entities\\User.cs",
+              "RelativeToolTip": "Zenda.API\\Domain\\Entities\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T03:26:38.606Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Program.cs",
+              "RelativeDocumentMoniker": "Zenda.API\\Program.cs",
+              "ToolTip": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Program.cs",
+              "RelativeToolTip": "Zenda.API\\Program.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T03:26:25.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Infrastructure\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Zenda.API\\Infrastructure\\Data\\AppDbContext.cs",
+              "ToolTip": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Infrastructure\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "Zenda.API\\Infrastructure\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T03:26:21.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TaskService.cs",
+              "DocumentMoniker": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Application\\Services\\TaskService.cs",
+              "RelativeDocumentMoniker": "Zenda.API\\Application\\Services\\TaskService.cs",
+              "ToolTip": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Application\\Services\\TaskService.cs",
+              "RelativeToolTip": "Zenda.API\\Application\\Services\\TaskService.cs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T03:13:39.944Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

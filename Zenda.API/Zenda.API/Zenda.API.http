@@ -1,0 +1,6 @@
+@Zenda.API_HostAddress = http://localhost:5156
+
+GET {{Zenda.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
