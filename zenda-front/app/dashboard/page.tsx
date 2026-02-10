@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/services/api";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
@@ -8,6 +8,7 @@ import { TaskColumn } from "../../components/TaskColumn";
 import { TaskModal } from "../../components/TaskModal";
 import { Task } from "@/types/task";
 import { LogData } from "@/components/LogData";
+import { TaskEdit } from "@/components/TaskEdit";
 
 type User = {
   id: string;
@@ -25,8 +26,12 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [addModal, setAddModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
+    const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [crrtStatus, setcrrtStatus] = useState(1);
   const [pendingDeletes, setPendingDeletes] = useState<PendingDelete[]>([]);
+  const pendingChanges = useRef<Map<string, Task>>(new Map());
+  const syncTimeout = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -41,9 +46,21 @@ export default function DashboardPage() {
     setcrrtStatus(num ? num : 1);
   };
 
+  const openEditModal = (task: Task)=> {
+    setEditModal(true);
+    setEditingTask(task)
+  }
+
   const handleTaskCreated = (task: Task) => {
     setTasks((prev) => [...prev, task]);
   };
+
+const handleTaskEdited = (editedTask: Task) => {
+  setTasks((prev) =>
+    prev.map((t) => (t.id === editedTask.id ? editedTask : t))
+  );
+};
+
 
   const handleLogout = async () => {
     try {
@@ -79,17 +96,44 @@ export default function DashboardPage() {
         timeoutId,
       },
     ]);
+    pendingChanges.current.delete(taskId);
   };
 
   const handleCancelDelete = (taskId: string) => {
     const pending = pendingDeletes.find((pd) => pd.id === taskId);
     if (!pending) return;
-
     clearTimeout(pending.timeoutId);
 
-    setTasks((prev) => [...prev, pending.task].sort((a, b) => a.order - b.order));
+    setTasks((prev) =>
+      [...prev, pending.task].sort((a, b) => a.order - b.order),
+    );
 
     setPendingDeletes((prev) => prev.filter((pd) => pd.id !== taskId));
+  };
+
+
+
+
+
+  const scheduleSync = () => {
+    if (syncTimeout.current) clearTimeout(syncTimeout.current);
+
+    syncTimeout.current = setTimeout(async () => {
+      const tasksToSync = Array.from(pendingChanges.current.values());
+      pendingChanges.current.clear();
+
+      await api("/tasks/reorder", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tasks: tasksToSync.map((t) => ({
+            id: t.id,
+            statusId: t.statusId,
+            order: t.order,
+          })),
+        }),
+      });
+    }, 800);
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -97,30 +141,47 @@ export default function DashboardPage() {
 
     const { source, destination } = result;
 
-    if (source.droppableId === destination.droppableId) {
-      const columnTasks = tasks.filter(
-        (t) => t.statusId === parseInt(source.droppableId)
-      );
-      const [movedTask] = columnTasks.splice(source.index, 1);
-      columnTasks.splice(destination.index, 0, movedTask);
+    const sourceStatus = Number(source.droppableId);
+    const destStatus = Number(destination.droppableId);
 
-      const updatedTasks = tasks.map((task) => {
-        const newOrder = columnTasks.findIndex((t) => t.id === task.id);
-        if (newOrder !== -1) {
-          return { ...task, order: newOrder };
-        }
-        return task;
-      });
+    const columnsMap = new Map<number, Task[]>();
+    [1, 2, 3].forEach((status) => columnsMap.set(status, []));
 
-      setTasks(updatedTasks);
-    } else {
-      const updatedTasks = tasks.map((task) =>
-        task.id === result.draggableId
-          ? { ...task, statusId: parseInt(destination.droppableId) }
-          : task
-      );
-      setTasks(updatedTasks);
+    tasks.forEach((t) => {
+      columnsMap.get(t.statusId)!.push({ ...t });
+    });
+
+    columnsMap.forEach((col) => col.sort((a, b) => a.order - b.order));
+
+    const sourceColumn = columnsMap.get(sourceStatus)!;
+    const destColumn = columnsMap.get(destStatus)!;
+
+    const [movedTask] = sourceColumn.splice(source.index, 1);
+
+    movedTask.statusId = destStatus;
+
+    destColumn.splice(destination.index, 0, movedTask);
+
+    sourceColumn.forEach((t, i) => (t.order = i));
+    if (sourceStatus !== destStatus) {
+      destColumn.forEach((t, i) => (t.order = i));
     }
+
+const newTasks = Array.from(columnsMap.values()).flat();
+setTasks(newTasks);
+
+const affected = [
+  ...sourceColumn,
+  ...(sourceStatus !== destStatus ? destColumn : []),
+];
+
+affected.forEach((t) => {
+  pendingChanges.current.set(t.id, t);
+});
+
+scheduleSync();
+
+    
   };
 
   const columns = [
@@ -152,7 +213,8 @@ export default function DashboardPage() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
               <p className="text-sm text-gray-600 mt-1">
-                Welcome back <span className="font-semibold">{user?.email}</span>
+                Welcome back{" "}
+                <span className="font-semibold">{user?.email}</span>
               </p>
             </div>
             <button
@@ -176,7 +238,7 @@ export default function DashboardPage() {
                 statusId={column.statusId}
                 tasks={tasks.filter((t) => t.statusId === column.statusId)}
                 onAddTask={(statusId) => openAddTask(true, statusId)}
-                onEditTask={(taskId) => console.log("Edit task", taskId)}
+                onEditTask={openEditModal}
                 onDeleteTask={handleDeleteTask}
               />
             ))}
@@ -191,11 +253,17 @@ export default function DashboardPage() {
           onCreate={handleTaskCreated}
         />
       )}
-
-      <LogData
-        pendingDeletes={pendingDeletes}
-        onCancel={handleCancelDelete}
-      />
+      {editModal && editingTask && (
+        <TaskEdit
+          thisTask={editingTask}
+          onEdited={handleTaskEdited}
+          onClose={() => {
+          setEditModal(false);
+          setEditingTask(null);
+        }}
+        />
+      )}
+      <LogData pendingDeletes={pendingDeletes} onCancel={handleCancelDelete} />
     </div>
   );
 }

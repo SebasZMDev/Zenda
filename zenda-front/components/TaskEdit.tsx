@@ -1,22 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { Task } from "@/types/task";
 
 interface ModalProps {
-    onClose: ()=>void
-    thisStatus: number
-    onCreate: (task: Task) => void;
+  thisTask: Task
+  onClose: ()=>void
+  onEdited: (task: Task) => void
 }
 
 
-export const TaskModal: React.FC<ModalProps> = ({onClose, thisStatus, onCreate}) => {
+export const TaskEdit: React.FC<ModalProps> = ({thisTask, onClose, onEdited}) => {
 
   const [title, setTitle] = useState("")
   const [desc, setDesc] = useState("")
- const [error, setError] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const createTask= async() => {
+  const updateTask= async() => {
     if (!title.trim()) {
       setError("Title is required");
       return;
@@ -27,20 +27,20 @@ export const TaskModal: React.FC<ModalProps> = ({onClose, thisStatus, onCreate})
 
     if (!title) return
     try {
-        const newTask = await api('/Tasks', {
-              method: "POST",
+      
+        const editedTask = await api(`/tasks/${thisTask.id}`,{method: "PUT",
               body: JSON.stringify({ 
                 title: title.trim(),
                 description: desc.trim(),
-                statusId: thisStatus,
-                order: 0,
+                statusId: thisTask.statusId,
+                order: thisTask.order,
               }),
             });
-        onCreate(newTask);
         onClose();
-
+        onEdited(editedTask)
     }catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
+      console.log(err)
     } finally {
       setLoading(false);
     }
@@ -50,10 +50,14 @@ export const TaskModal: React.FC<ModalProps> = ({onClose, thisStatus, onCreate})
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      createTask();
+      updateTask();
     }
   };
 
+  useEffect(()=>{
+    setTitle(thisTask.title)
+    setDesc(thisTask.description?? "")
+  },[thisTask])
 
   return (
     <div className="absolute inset-0 flex items-center justify-center">
@@ -67,7 +71,7 @@ export const TaskModal: React.FC<ModalProps> = ({onClose, thisStatus, onCreate})
                 rounded-md text-zinc-500 hover:text-zinc-800 transition">
             ✕
           </button>
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">Add Task</h2>
+        <h2 className="text-lg font-semibold mb-4 text-gray-700">Edit Task</h2>
         <input
           className="w-full mb-3 p-2 rounded-md border border-zinc-700 outline-none text-gray-700"
 
@@ -89,7 +93,7 @@ export const TaskModal: React.FC<ModalProps> = ({onClose, thisStatus, onCreate})
             disabled={loading}
             rows={4}
         ></textarea>
-        <button onClick={()=>createTask()}
+        <button onClick={()=>updateTask()}
           className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50">
           Add
         </button>

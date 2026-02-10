@@ -1,6 +1,7 @@
 import React from 'react';
 import { Draggable } from '@hello-pangea/dnd';
 import { Clock, User, GripVertical } from 'lucide-react';
+import { Task } from "@/types/task";
 
 interface TaskCardProps {
   task: {
@@ -18,7 +19,7 @@ interface TaskCardProps {
     };
   };
   index: number;
-  onEdit?: (taskId: string) => void;
+  onEdit?: (task: Task) => void;
   onDelete?: (taskId: string) => void;
 }
 
@@ -53,7 +54,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, index, onEdit, onDelet
             <div className="flex-1 min-w-0">
               <h3 
                 className="font-semibold text-gray-900 mb-2 cursor-pointer hover:text-blue-600"
-                onClick={() => onEdit?.(task.id)}
+                onClick={() => onEdit?.(task)}
               >
                 {task.title}
               </h3>
@@ -83,7 +84,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, index, onEdit, onDelet
               <div className="flex gap-1">
                 {onEdit && (
                   <button
-                    onClick={() => onEdit(task.id)}
+                    onClick={() => onEdit(task)}
                     className="text-gray-400 hover:text-blue-600 p-1 rounded hover:bg-blue-50"
                     title="Editar tarea"
                   >

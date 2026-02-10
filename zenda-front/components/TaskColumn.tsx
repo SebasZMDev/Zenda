@@ -11,7 +11,7 @@ interface TaskColumnProps {
   tasks: Task[];
   statusId: number;
   onAddTask?: (statusId: number) => void;
-  onEditTask?: (taskId: string) => void;
+  onEditTask?: (task: Task) => void;
   onDeleteTask?: (taskId: string) => void;
 }
 
@@ -67,8 +67,8 @@ export const TaskColumn: React.FC<TaskColumnProps> = ({
           {onAddTask && (
             <button
               onClick={() => onAddTask(statusId)}
-              className="text-gray-500 hover:text-gray-700 hover:bg-white rounded-lg p-1.5 transition-all hover:shadow-sm"
-              title="Agregar tarea"
+              className="text-gray-500 hover:text-gray-700 rounded-lg p-1.5 transition-all hover:shadow-sm"
+              title="Add task"
             >
               <Plus size={20} />
             </button>
@@ -82,7 +82,7 @@ export const TaskColumn: React.FC<TaskColumnProps> = ({
               ref={provided.innerRef}
               {...provided.droppableProps}
               className={`flex-1 overflow-y-auto rounded-lg transition-colors ${
-                snapshot.isDraggingOver ? 'bg-white bg-opacity-50 ring-2 ring-blue-300' : ''
+                snapshot.isDraggingOver ? 'bg-opacity-50 ring-2 ring-blue-300' : ''
               }`}
               style={{ minHeight: '400px' }}
             >
