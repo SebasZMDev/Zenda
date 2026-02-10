@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Text;
 using Zenda.Api.Application.Interfaces;
 using Zenda.Api.Application.Services;
@@ -19,7 +18,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zenda API", Version = "v1" });
-
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
@@ -28,7 +26,6 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -69,20 +66,34 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtIssuer,
         ValidAudience = jwtAudience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        ClockSkew = TimeSpan.Zero // Elimina el tiempo de gracia de 5 minutos por defecto
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            // Intenta obtener el token de la cookie
+            context.Token = context.Request.Cookies["accessToken"];
+            return Task.CompletedTask;
+        }
     };
 });
 
 builder.Services.AddAuthorization();
 
-// CORS configuration
+// CORS configuration - MUY IMPORTANTE
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowNextApp", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy
+            .WithOrigins("http://localhost:3000") // Tu frontend Next.js
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials() // CRÍTICO para cookies
+            .WithExposedHeaders("Set-Cookie"); // Permite que Next.js vea las cookies
     });
 });
 
@@ -99,16 +110,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Custom error handling middleware
-app.UseMiddleware<ErrorHandlingMiddleware>();
+// ORDEN CRÍTICO DEL MIDDLEWARE
+app.UseMiddleware<ErrorHandlingMiddleware>(); // 1. Error handling primero
 
-app.UseHttpsRedirection();
+// 2. CORS DEBE IR ANTES de Authentication/Authorization
+app.UseCors("AllowNextApp");
 
-app.UseCors("AllowAll");
+// 3. NO uses HTTPS redirect en desarrollo si ambos usan HTTP
+// app.UseHttpsRedirection(); // Comenta esto en desarrollo
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthentication(); // 4. Autenticación
+app.UseAuthorization();  // 5. Autorización
 
-app.MapControllers();
+app.MapControllers(); // 6. Rutas
 
 app.Run();

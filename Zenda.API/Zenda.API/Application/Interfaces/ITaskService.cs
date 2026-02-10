@@ -1,4 +1,5 @@
 using Zenda.Api.Application.DTOs;
+using Zenda.API.Application.DTOs;
 
 namespace Zenda.Api.Application.Interfaces
 {
@@ -10,5 +11,7 @@ namespace Zenda.Api.Application.Interfaces
         Task<TaskDto?> UpdateTaskAsync(Guid taskId, UpdateTaskDto updateTaskDto, Guid userId);
         Task<bool> DeleteTaskAsync(Guid taskId, Guid userId);
         Task<IEnumerable<TaskDto>> GetTasksByStatusAsync(Guid userId, int statusId);
+        Task ReorderTasksAsync(ReorderTasksDto dto, Guid userId);
+
     }
 }

@@ -10,5 +10,8 @@ namespace Zenda.Api.Application.DTOs
         public int Order { get; set; }
         public Guid UserId { get; set; }
         public DateTime CreatedAt { get; set; }
+
+
+
     }
 }

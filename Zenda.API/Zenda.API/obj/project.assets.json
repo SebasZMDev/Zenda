@@ -4229,11 +4229,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Zenda.API.csproj",
+      "projectUniqueName": "E:\\Dev\\VisualStudio\\Zenda\\Zenda.API\\Zenda.API\\Zenda.API.csproj",
       "projectName": "Zenda.API",
-      "projectPath": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\Zenda.API.csproj",
+      "projectPath": "E:\\Dev\\VisualStudio\\Zenda\\Zenda.API\\Zenda.API\\Zenda.API.csproj",
       "packagesPath": "C:\\Users\\SebasZM\\.nuget\\packages\\",
-      "outputPath": "E:\\Dev\\VisualStudio\\repos\\Zenda.API\\Zenda.API\\obj\\",
+      "outputPath": "E:\\Dev\\VisualStudio\\Zenda\\Zenda.API\\Zenda.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4314,6 +4314,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.23, 8.0.23]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -4322,7 +4340,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

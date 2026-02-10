@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zenda.Api.Application.DTOs;
 using Zenda.Api.Application.Interfaces;
+using Zenda.API.Application.DTOs;
 
 namespace Zenda.Api.Controllers
 {
@@ -93,5 +94,15 @@ namespace Zenda.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch("reorder")]
+        public async Task<ActionResult> ReorderTasks([FromBody] ReorderTasksDto dto)
+        {
+            var userId = GetUserId();
+            await _taskService.ReorderTasksAsync(dto, userId);
+            return NoContent();
+        }
+
+
     }
 }

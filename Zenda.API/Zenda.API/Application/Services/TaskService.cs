@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using Zenda.Api.Application.DTOs;
 using Zenda.Api.Application.Interfaces;
 using Zenda.Api.Domain.Entities;
 using Zenda.Api.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using Zenda.API.Application.DTOs;
 
 namespace Zenda.Api.Application.Services
 {
@@ -115,5 +116,25 @@ namespace Zenda.Api.Application.Services
                 CreatedAt = task.CreatedAt
             };
         }
+
+
+        public async Task ReorderTasksAsync(ReorderTasksDto dto, Guid userId)
+        {
+            var ids = dto.Tasks.Select(t => t.Id).ToList();
+
+            var tasks = await _context.Tasks
+                .Where(t => ids.Contains(t.Id) && t.UserId == userId)
+                .ToListAsync();
+
+            foreach (var task in tasks)
+            {
+                var updated = dto.Tasks.First(t => t.Id == task.Id);
+                task.StatusId = updated.StatusId;
+                task.Order = updated.Order;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

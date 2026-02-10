@@ -1,48 +1,97 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Zenda.Api.Application.DTOs;
 using Zenda.Api.Application.Interfaces;
 
 namespace Zenda.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly IAuthService _auth;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService auth)
         {
-            _authService = authService;
+            _auth = auth;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
-                return BadRequest(new { message = "Email and password are required" });
+            var result = await _auth.RegisterAsync(request.Email, request.Password);
+            if (result == null) return BadRequest();
 
-            if (await _authService.UserExistsAsync(request.Email))
-                return BadRequest(new { message = "User already exists" });
-
-            var token = await _authService.RegisterAsync(request.Email, request.Password);
-
-            if (token == null)
-                return BadRequest(new { message = "Registration failed" });
-
-            return Ok(new { token });
+            SetCookies(result);
+            return Ok();
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
-                return BadRequest(new { message = "Email and password are required" });
+            var result = await _auth.LoginAsync(request.Email, request.Password);
+            if (result == null) return Unauthorized();
 
-            var token = await _authService.LoginAsync(request.Email, request.Password);
+            SetCookies(result);
+            return Ok();
+        }
 
-            if (token == null)
-                return Unauthorized(new { message = "Invalid credentials" });
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken == null) return Unauthorized();
 
-            return Ok(new { token });
+            var result = await _auth.RefreshAsync(refreshToken);
+            if (result == null) return Unauthorized();
+
+            SetCookies(result);
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult Me()
+        {
+            return Ok(new
+            {
+                id = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                email = User.FindFirstValue(ClaimTypes.Email)
+            });
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken != null)
+                await _auth.LogoutAsync(refreshToken);
+
+            Response.Cookies.Delete("accessToken");
+            Response.Cookies.Delete("refreshToken");
+            return Ok();
+        }
+
+        private void SetCookies(AuthResult result)
+        {
+            var isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+
+            Response.Cookies.Append("accessToken", result.AccessToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = !isDevelopment, // false en dev, true en prod
+                SameSite = isDevelopment ? SameSiteMode.Lax : SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddMinutes(15)
+            });
+
+            Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = !isDevelopment,
+                SameSite = isDevelopment ? SameSiteMode.Lax : SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(7)
+            });
         }
     }
 
